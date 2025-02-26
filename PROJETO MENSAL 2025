@@ -1,0 +1,102 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+// Classe para representar uma reserva
+class Reserva {
+    private String nome;
+    private String data;
+    private String horario;
+    private int numPessoas;
+
+    // Construtor
+    public Reserva(String nome, String data, String horario, int numPessoas) {
+        this.nome = nome;
+        this.data = data;
+        this.horario = horario;
+        this.numPessoas = numPessoas;
+    }
+
+    // Método para exibir a reserva
+    public void exibirReserva() {
+        System.out.println("Nome: " + nome + " | Data: " + data + " | Horário: " + horario + " | Pessoas: " + numPessoas);
+    }
+}
+
+// Classe principal do sistema (O arquivo deve se chamar RestauranteReservas.java)
+public class RestauranteReservas {
+    private static ArrayList<Reserva> reservas = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
+    // Método para agendar uma reserva
+    private static void agendarReserva() {
+        System.out.println("\n--- Agendar Reserva ---");
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("Data (DD/MM/AAAA): ");
+        String data = scanner.nextLine();
+        System.out.print("Horário (HH:MM): ");
+        String horario = scanner.nextLine();
+        System.out.print("Número de pessoas: ");
+        
+        // Verifica se a entrada é um número inteiro
+        while (!scanner.hasNextInt()) {
+            System.out.print("Por favor, insira um número válido para a quantidade de pessoas: ");
+            scanner.next(); // Limpa a entrada inválida
+        }
+        int numPessoas = scanner.nextInt();
+        scanner.nextLine(); // Consumir a quebra de linha
+
+        reservas.add(new Reserva(nome, data, horario, numPessoas));
+        System.out.println("Reserva feita com sucesso!");
+    }
+
+    // Método para visualizar reservas
+    private static void visualizarReservas() {
+        if (reservas.isEmpty()) {
+            System.out.println("\nNenhuma reserva encontrada.");
+        } else {
+            System.out.println("\n--- Lista de Reservas ---");
+            for (int i = 0; i < reservas.size(); i++) {
+                System.out.print((i + 1) + ". ");
+                reservas.get(i).exibirReserva();
+            }
+        }
+    }
+
+    // Método principal com o menu
+    public static void main(String[] args) {
+        int opcao = 0;
+
+        do {
+            System.out.println("\n--- Restaurante - Sistema de Reservas ---");
+            System.out.println("1. Agendar Reserva");
+            System.out.println("2. Visualizar Reservas");
+            System.out.println("3. Sair");
+            System.out.print("Escolha uma opção: ");
+
+            // Verifica se a entrada é um número válido
+            while (!scanner.hasNextInt()) {
+                System.out.print("Por favor, insira um número válido: ");
+                scanner.next(); // Limpa a entrada inválida
+            }
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Consumir a quebra de linha
+
+            switch (opcao) {
+                case 1:
+                    agendarReserva();
+                    break;
+                case 2:
+                    visualizarReservas();
+                    break;
+                case 3:
+                    System.out.println("\nSaindo do sistema...");
+                    break;
+                default:
+                    System.out.println("\nOpção inválida! Tente novamente.");
+            }
+        } while (opcao != 3);
+
+        scanner.close();
+    }
+}
